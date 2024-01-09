@@ -1,3 +1,5 @@
+import './HomePage.css';
+
 function HomePage() {
   const name: string | null = null;
   return (
