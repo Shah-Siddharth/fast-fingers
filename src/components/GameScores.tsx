@@ -1,3 +1,5 @@
+import './GameScores.css';
+
 function GameScores() {
   const scores: number[] = [2, 10, 100];
   return (

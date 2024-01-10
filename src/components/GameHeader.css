@@ -1,0 +1,10 @@
+.GameHeader {
+  min-width: 65%;
+  max-width: 90%;
+  text-align: center;
+  margin: 10px auto
+}
+
+.game-info > * {
+  margin: 5px;
+}

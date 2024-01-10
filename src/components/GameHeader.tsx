@@ -1,3 +1,5 @@
+import './GameHeader.css'
+
 function GameHeader() {
   const name: string = "Siddharth";
   const level: string = "Easy";

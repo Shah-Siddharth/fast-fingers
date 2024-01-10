@@ -1,0 +1,9 @@
+.GameScores {
+  min-width: 200px;
+  text-align: center;
+}
+
+.game-scores {
+  list-style-type: none;
+  padding: 0;
+}
