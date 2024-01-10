@@ -8,25 +8,27 @@ import HomePage from './HomePage'
 
 import './App.css'
 
-type gameStateType = 'NEW' | 'PLAYING' | 'OVER';
+type gameStateType = 'HOME' | 'PLAYING' | 'OVER';
 type difficultyType = 'Easy' | 'Medium' | 'Hard';
 
 function App() {
-  const [gameState, setGameState] = useState<gameStateType>('NEW');
-  const [username, setUsername] = useState<string | null>(null);
   const [difficulty, setDifficulty] = useState<difficultyType>('Easy');
+  const [gameState, setGameState] = useState<gameStateType>('HOME');
+  const [username, setUsername] = useState<string | null>(null);
 
-  const onDifficultyChange = (difficulty: string) => setDifficulty(difficulty as difficultyType);
-  const onGameStart = () => setGameState('PLAYING');
-  const onUsernameChange = (username: string) => setUsername(username);
+  const handleDifficultyChange = (difficulty: string) => setDifficulty(difficulty as difficultyType);
+  const handleGameRestart = () => setGameState('PLAYING');
+  const handleGameStart = () => setGameState('PLAYING');
+  const handleGameQuit = () => setGameState('HOME');
+  const handleUsernameChange = (username: string) => setUsername(username);
 
-  if (gameState === 'NEW') {
+  if (gameState === 'HOME') {
     return (
       <div className="App">
         <HomePage
-          onDifficultyChange={onDifficultyChange}
-          onGameStart={onGameStart}
-          onUsernameChange={onUsernameChange}
+          onDifficultyChange={handleDifficultyChange}
+          onGameStart={handleGameStart}
+          onUsernameChange={handleUsernameChange}
         />
       </div>
     )
@@ -40,7 +42,7 @@ function App() {
         <Game />
         <div className="game-padding"></div>
       </div>
-      <GameFooter />
+      <GameFooter onGameRestart={handleGameRestart} onGameQuit={handleGameQuit} />
     </div>
   )
 }
