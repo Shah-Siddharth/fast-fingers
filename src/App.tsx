@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import Game from './components/Game';
 import GameFooter from './components/GameFooter';
 import GameHeader from './components/GameHeader';
@@ -6,13 +8,26 @@ import HomePage from './HomePage'
 
 import './App.css'
 
-function App() {
-  const playing: boolean = true;
+type gameStateType = 'NEW' | 'PLAYING' | 'OVER';
+type difficultyType = 'Easy' | 'Medium' | 'Hard';
 
-  if (!playing) {
+function App() {
+  const [gameState, setGameState] = useState<gameStateType>('NEW');
+  const [username, setUsername] = useState<string | null>(null);
+  const [difficulty, setDifficulty] = useState<difficultyType>('Easy');
+
+  const onDifficultyChange = (difficulty: string) => setDifficulty(difficulty as difficultyType);
+  const onGameStart = () => setGameState('PLAYING');
+  const onUsernameChange = (username: string) => setUsername(username);
+
+  if (gameState === 'NEW') {
     return (
       <div className="App">
-        <HomePage />
+        <HomePage
+          onDifficultyChange={onDifficultyChange}
+          onGameStart={onGameStart}
+          onUsernameChange={onUsernameChange}
+        />
       </div>
     )
   }
