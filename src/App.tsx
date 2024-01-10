@@ -19,7 +19,7 @@ function App() {
   const [difficulty, setDifficulty] = useState<difficultyType>('Easy');
   const [gameState, setGameState] = useState<gameStateType>('HOME');
   const [score, setScore] = useState<number>(0);
-  const [username, setUsername] = useState<string | null>(null);
+  const [username, setUsername] = useState<string>("");
 
   const timer = useRef<number | undefined>();
 
@@ -44,6 +44,7 @@ function App() {
     return (
       <div className="App">
         <HomePage
+          username={username}
           onDifficultyChange={handleDifficultyChange}
           onGameStart={handleGameStart}
           onUsernameChange={handleUsernameChange}
@@ -54,7 +55,7 @@ function App() {
 
   return (
     <div className="App">
-      <GameHeader username={username!} difficulty={difficulty} score={score} />
+      <GameHeader username={username} difficulty={difficulty} score={score} />
       <div className="game-main">
         <GameScores />
         <Game />

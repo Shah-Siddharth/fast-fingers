@@ -1,12 +1,13 @@
 import './HomePage.css';
 
 type HomePageProps = {
+  username: string,
   onDifficultyChange: (difficulty: string) => void,
   onGameStart: () => void,
   onUsernameChange: (username: string) => void,
 }
 
-function HomePage({ onDifficultyChange, onGameStart, onUsernameChange }: HomePageProps) {
+function HomePage({ username, onDifficultyChange, onGameStart, onUsernameChange }: HomePageProps) {
 
   return (
     <div className="HomePage">
@@ -23,7 +24,9 @@ function HomePage({ onDifficultyChange, onGameStart, onUsernameChange }: HomePag
           <option value="Hard">Hard</option>
         </select>
       </div>
-      <button onClick={onGameStart} className="start-btn">START GAME</button>
+      <button disabled={!username} onClick={onGameStart} className="start-btn">
+        {username ? "Start Game" : "Please Enter a Username"}
+      </button>
     </div>
   )
 }

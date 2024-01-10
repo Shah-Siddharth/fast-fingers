@@ -16,3 +16,9 @@
   padding: 10px;
   border-radius: 10px;
 }
+
+.start-btn:disabled {
+  background-color: transparent;
+  color: red;
+  border: none;
+}
