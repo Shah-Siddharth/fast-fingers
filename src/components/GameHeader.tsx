@@ -1,8 +1,14 @@
+import { difficultyType } from '../types';
+
 import './GameHeader.css'
 
-function GameHeader() {
-  const name: string = "Siddharth";
-  const level: string = "Easy";
+type GameHeaderProps = {
+  username: string,
+  difficulty: difficultyType,
+  score: number
+}
+
+function GameHeader({ score, username, difficulty }: GameHeaderProps) {
   const currentScore: number = 10;
 
   return (
@@ -10,9 +16,9 @@ function GameHeader() {
       <div className="GameHeader">
         <h1 className="game-title">Fast Fingers</h1>
         <div className="game-info">
-          <div className="game-info__name">{name}</div>
-          <div className="game-info__level">Level: {level}</div>
-          <div className="game-info__score">Score: {currentScore}</div>
+          <div className="game-info__name">{username}</div>
+          <div className="game-info__level">Difficulty: {difficulty}</div>
+          <div className="game-info__score">Score: {score}</div>
         </div>
       </div>
     </>
