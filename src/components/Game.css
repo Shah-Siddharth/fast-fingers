@@ -3,3 +3,16 @@
   margin-bottom: auto;
   text-align: center;
 }
+
+.game-word__letter {
+  display: inline;
+  margin: 0;
+}
+
+.game-word__letter--correct {
+  color: darkgreen;
+}
+
+.game-word__letter--wrong {
+  color: crimson;
+}
