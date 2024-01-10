@@ -35,10 +35,18 @@ function App() {
       timer.current = setInterval(() => setScore(score => score + 1), 1000);
     } else {
       if (timer.current) clearInterval(timer.current);
-      if (gameState == 'HOME') setScore(0);
     }
     return () => clearInterval(timer.current);
-  }, [gameState])
+  }, [gameState]);
+
+  // handle state updates based on gameState changes
+  useEffect(() => {
+    if (gameState == 'HOME') {
+      setUsername("");
+      setScore(0);
+      setDifficulty('Easy');
+    }
+  }, [gameState]);
 
   if (gameState === 'HOME') {
     return (
