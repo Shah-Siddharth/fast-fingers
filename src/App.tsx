@@ -23,6 +23,7 @@ function App() {
       <div className="game-main">
         <GameScores />
         <Game />
+        <div className="game-padding"></div>
       </div>
       <GameFooter />
     </div>

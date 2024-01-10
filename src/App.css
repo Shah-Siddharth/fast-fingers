@@ -1,5 +1,11 @@
 .game-main {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.game-padding {
+  visibility: hidden;
+  min-width: 25%;
 }
