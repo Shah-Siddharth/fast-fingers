@@ -17,7 +17,7 @@ import './App.css'
 
 function App() {
   const [difficulty, setDifficulty] = useState<difficultyType>('Easy');
-  const [gameState, setGameState] = useState<gameStateType>('PLAYING');
+  const [gameState, setGameState] = useState<gameStateType>('HOME');
   const [currentScore, setCurrentScore] = useState<number>(0);
   const [scores, setScores] = useState<number[]>([]);
   const [username, setUsername] = useState<string>("");
@@ -76,7 +76,12 @@ function App() {
       <GameHeader username={username} difficulty={difficulty} score={currentScore} />
       <div className="game-main">
         <GameScores scores={scores} />
-        <Game difficulty={difficulty} gameState={gameState} onGameOver={handleGameOver} />
+        <Game
+          difficulty={difficulty}
+          gameState={gameState}
+          onGameOver={handleGameOver}
+          setDifficulty={setDifficulty}
+        />
         <div className="game-padding"></div>
       </div>
       <GameFooter gameState={gameState} onGameRestart={handleGameStart} onGameQuit={handleGameQuit} />

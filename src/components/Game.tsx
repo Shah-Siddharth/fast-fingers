@@ -12,7 +12,8 @@ import './Game.css';
 type GameProps = {
   difficulty: difficultyType,
   gameState: gameStateType,
-  onGameOver: () => void
+  onGameOver: () => void,
+  setDifficulty: (val: difficultyType) => void
 }
 
 const difficultyValues = new Map<difficultyType, number>([
@@ -21,12 +22,14 @@ const difficultyValues = new Map<difficultyType, number>([
   ['Hard', 2]
 ])
 
-function Game({ difficulty, gameState, onGameOver }: GameProps) {
+function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
   const [currentWord, setCurrentWord] = useState<string>("");
   const [input, setInput] = useState<string>("");
   const [remainingTime, setRemainingTime] = useState<number>(0);
 
   const timer = useRef<number | undefined>(undefined);
+  const incrementValue: number = 0.1  // increment difficulty after every successful word
+  const currentDifficultyValue = useRef<number>(difficultyValues.get(difficulty)!)
 
   const getNewWord = (difficulty: difficultyType): string => {
     if (difficulty === 'Easy') {
@@ -65,6 +68,9 @@ function Game({ difficulty, gameState, onGameOver }: GameProps) {
     if (input.toLowerCase() === currentWord) {
       setCurrentWord(getNewWord(difficulty));
       setInput("");
+      currentDifficultyValue.current = currentDifficultyValue.current + incrementValue;
+      if (currentDifficultyValue.current >= difficultyValues.get('Hard')!) setDifficulty('Hard');
+      else if (currentDifficultyValue.current >= difficultyValues.get('Medium')!) setDifficulty('Medium');
     }
   }, [input]);
 
@@ -74,6 +80,9 @@ function Game({ difficulty, gameState, onGameOver }: GameProps) {
       clearInterval(timer.current);
       timer.current = undefined;
       setInput("");
+      setDifficulty('Easy');
+      currentDifficultyValue.current = difficultyValues.get('Easy')!;
+      setCurrentWord(getNewWord('Easy'));
       onGameOver();
     }
   }, [remainingTime]);
