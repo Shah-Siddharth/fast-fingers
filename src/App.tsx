@@ -46,6 +46,7 @@ function App() {
       setUsername("");
       setCurrentScore(0);
       setDifficulty('Easy');
+      setScores([]);
     }
 
     if (gameState == 'PLAYING') {
@@ -78,7 +79,7 @@ function App() {
         <Game difficulty={difficulty} gameState={gameState} onGameOver={handleGameOver} />
         <div className="game-padding"></div>
       </div>
-      <GameFooter onGameRestart={handleGameStart} onGameQuit={handleGameQuit} />
+      <GameFooter gameState={gameState} onGameRestart={handleGameStart} onGameQuit={handleGameQuit} />
     </div>
   )
 }

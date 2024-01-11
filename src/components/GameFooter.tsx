@@ -1,16 +1,18 @@
+import { gameStateType } from '../types';
+
 import './GameFooter.css';
 
 type GameFooterProps = {
+  gameState: gameStateType
   onGameRestart: () => void,
   onGameQuit: () => void
 }
 
-function GameFooter({ onGameRestart, onGameQuit }: GameFooterProps) {
-  const gameEnd: boolean = true;
+function GameFooter({ gameState, onGameRestart, onGameQuit }: GameFooterProps) {
 
   return (
     <div className="GameFooter">
-      {gameEnd && <button onClick={onGameRestart} className="play-agin">Play Again</button>}
+      {(gameState === 'OVER') && <button onClick={onGameRestart} className="play-agin">Play Again</button>}
       <button onClick={onGameQuit} className="quit-game">Quit Game</button>
     </div>
   )
