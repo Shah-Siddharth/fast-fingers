@@ -74,7 +74,7 @@ function App() {
     <div className="App">
       <GameHeader username={username} difficulty={difficulty} score={currentScore} />
       <div className="game-main">
-        <GameScores />
+        <GameScores scores={scores} />
         <Game difficulty={difficulty} gameState={gameState} onGameOver={handleGameOver} />
         <div className="game-padding"></div>
       </div>
