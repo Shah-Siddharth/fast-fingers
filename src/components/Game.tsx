@@ -56,6 +56,7 @@ function Game({ difficulty, gameState, onGameOver }: GameProps) {
     return letterClass;
   }
 
+  // on user input, see if it matches the current word
   useEffect(() => {
     if (input.toLowerCase() === currentWord) {
       setCurrentWord(getNewWord(difficulty));
@@ -63,38 +64,48 @@ function Game({ difficulty, gameState, onGameOver }: GameProps) {
     }
   }, [input]);
 
+  // after decreasing remaining time, see if timer runs out
   useEffect(() => {
-    if (remainingTime === 0 && timer.current) {
+    if (remainingTime === 0 && timer.current) {   // game over
       clearInterval(timer.current);
       timer.current = undefined;
+      setInput("");
       onGameOver();
     }
   }, [remainingTime]);
 
+  // for every new word or difficulty level, set a new timer
   useEffect(() => {
     const seconds = currentWord.length;   // change logic for different levels
     setRemainingTime(seconds);
-    timer.current = setInterval(() => setRemainingTime(time => time - 1), 1000);
+    if (gameState == 'PLAYING') timer.current = setInterval(() => setRemainingTime(time => time - 1), 1000);
     return () => {
       clearInterval(timer.current);
       timer.current = undefined;
     }
-  }, [currentWord, difficulty]);
+  }, [currentWord, difficulty, gameState]);
 
-
-  return (
-    <div className="Game">
-      <Countdown />
-      <h1 className="temp-countdown">{remainingTime}</h1>
-      <div className="game-word">
-        {currentWord.split("").map((letter, index) => {
-          const letterClass = getLetterClass(letter, index);
-          return <h1 className={`game-word__letter ${letterClass}`}>{letter}</h1>
-        })}
+  if (gameState === 'PLAYING') {
+    return (
+      <div className="Game">
+        <Countdown />
+        <h1 className="temp-countdown">{remainingTime}</h1>
+        <div className="game-word">
+          {currentWord.split("").map((letter, index) => {
+            const letterClass = getLetterClass(letter, index);
+            return <h1 className={`game-word__letter ${letterClass}`}>{letter}</h1>
+          })}
+        </div>
+        <input type="text" value={input} onChange={(e) => setInput(e.target.value)} className="game-input" />
       </div>
-      <input type="text" value={input} onChange={(e) => setInput(e.target.value)} className="game-input" />
-    </div>
-  )
+    )
+  } else {
+    return (
+      <div className="Game">
+        <h1 className="game-over">Game Over!</h1>
+      </div>
+    )
+  }
 }
 
 export default Game;
