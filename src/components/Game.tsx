@@ -21,7 +21,7 @@ function Game({ difficulty, gameState, onGameOver }: GameProps) {
   const [input, setInput] = useState<string>("");
   const [remainingTime, setRemainingTime] = useState<number>(0);
 
-  const timer = useRef<number>();
+  const timer = useRef<number | undefined>(undefined);
 
   const getNewWord = (difficulty: difficultyType): string => {
     const randomIndex = Math.floor(Math.random() * 3);
@@ -66,6 +66,7 @@ function Game({ difficulty, gameState, onGameOver }: GameProps) {
   useEffect(() => {
     if (remainingTime === 0 && timer.current) {
       clearInterval(timer.current);
+      timer.current = undefined;
       onGameOver();
     }
   }, [remainingTime]);
@@ -74,7 +75,10 @@ function Game({ difficulty, gameState, onGameOver }: GameProps) {
     const seconds = currentWord.length;   // change logic for different levels
     setRemainingTime(seconds);
     timer.current = setInterval(() => setRemainingTime(time => time - 1), 1000);
-    return () => clearInterval(timer.current);
+    return () => {
+      clearInterval(timer.current);
+      timer.current = undefined;
+    }
   }, [currentWord, difficulty]);
 
 

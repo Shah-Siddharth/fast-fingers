@@ -17,14 +17,15 @@ import './App.css'
 
 function App() {
   const [difficulty, setDifficulty] = useState<difficultyType>('Easy');
-  const [gameState, setGameState] = useState<gameStateType>('HOME');
-  const [score, setScore] = useState<number>(0);
+  const [gameState, setGameState] = useState<gameStateType>('PLAYING');
+  const [currentScore, setCurrentScore] = useState<number>(0);
+  const [scores, setScores] = useState<number[]>([]);
   const [username, setUsername] = useState<string>("");
 
   const timer = useRef<number | undefined>();
 
   const handleDifficultyChange = (difficulty: string) => setDifficulty(difficulty as difficultyType);
-  const handleGameRestart = () => setGameState('PLAYING');
+  const handleGameOver = () => setGameState('OVER');
   const handleGameStart = () => setGameState('PLAYING');
   const handleGameQuit = () => setGameState('HOME');
   const handleUsernameChange = (username: string) => setUsername(username);
@@ -32,7 +33,7 @@ function App() {
   // handle the score timer
   useEffect(() => {
     if (gameState == 'PLAYING') {
-      timer.current = setInterval(() => setScore(score => score + 1), 1000);
+      timer.current = setInterval(() => setCurrentScore(score => score + 1), 1000);
     } else {
       if (timer.current) clearInterval(timer.current);
     }
@@ -43,8 +44,16 @@ function App() {
   useEffect(() => {
     if (gameState == 'HOME') {
       setUsername("");
-      setScore(0);
+      setCurrentScore(0);
       setDifficulty('Easy');
+    }
+
+    if (gameState == 'PLAYING') {
+      setCurrentScore(0);
+    }
+
+    if (gameState == 'OVER') {
+      setScores(scores => [...scores, currentScore]);
     }
   }, [gameState]);
 
@@ -63,13 +72,13 @@ function App() {
 
   return (
     <div className="App">
-      <GameHeader username={username} difficulty={difficulty} score={score} />
+      <GameHeader username={username} difficulty={difficulty} score={currentScore} />
       <div className="game-main">
         <GameScores />
-        <Game />
+        <Game difficulty={difficulty} gameState={gameState} onGameOver={handleGameOver} />
         <div className="game-padding"></div>
       </div>
-      <GameFooter onGameRestart={handleGameRestart} onGameQuit={handleGameQuit} />
+      <GameFooter onGameRestart={handleGameStart} onGameQuit={handleGameQuit} />
     </div>
   )
 }
