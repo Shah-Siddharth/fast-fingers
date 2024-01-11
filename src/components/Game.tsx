@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Countdown from './Countdown';
 
@@ -10,11 +10,17 @@ const easyWords: string[] = ['aab', 'bba', 'cab'];
 const mediumWords: string[] = ['abcd', 'word', 'cake'];
 const hardWords: string[] = ['verybigword', 'anotherword', 'veryhardword'];
 
-function Game() {
+type GameProps = {
+  difficulty: difficultyType
+}
+
+function Game({ difficulty }: GameProps) {
   const gameState = 'PLAYING';
-  const difficulty: difficultyType = 'Easy';
-  const [currentWord, setCurrentWord] = useState("abcd");
-  const [input, setInput] = useState("adc");
+  const [currentWord, setCurrentWord] = useState<string>("abcd");
+  const [input, setInput] = useState<string>("");
+  const [remainingTime, setRemainingTime] = useState<number>(0);
+
+  const timer = useRef<number>();
 
   const getNewWord = (difficulty: difficultyType): string => {
     const randomIndex = Math.floor(Math.random() * 3);
@@ -56,9 +62,20 @@ function Game() {
     }
   }, [input]);
 
+  useEffect(() => {
+    const seconds = currentWord.length;   // change logic for different levels
+    setRemainingTime(seconds);
+    timer.current = setInterval(() => setRemainingTime(time => time - 1), 1000);
+    return () => {
+      console.log('cleanup!');
+      if (timer.current) clearInterval(timer.current);
+    }
+  }, [currentWord, difficulty])
+
   return (
     <div className="Game">
       <Countdown />
+      <h1 className="temp-countdown">{remainingTime}</h1>
       <div className="game-word">
         {currentWord.split("").map((letter, index) => {
           const letterClass = getLetterClass(letter, index);
