@@ -15,8 +15,14 @@ type GameProps = {
   onGameOver: () => void
 }
 
+const difficultyValues = new Map<difficultyType, number>([
+  ['Easy', 1],
+  ['Medium', 1.5],
+  ['Hard', 2]
+])
+
 function Game({ difficulty, gameState, onGameOver }: GameProps) {
-  const [currentWord, setCurrentWord] = useState<string>("abcd");
+  const [currentWord, setCurrentWord] = useState<string>("");
   const [input, setInput] = useState<string>("");
   const [remainingTime, setRemainingTime] = useState<number>(0);
 
@@ -74,7 +80,7 @@ function Game({ difficulty, gameState, onGameOver }: GameProps) {
 
   // for every new word or difficulty level, set a new timer
   useEffect(() => {
-    const seconds = currentWord.length;   // change logic for different levels
+    const seconds = Math.ceil(currentWord.length / difficultyValues.get(difficulty)!);   // change logic for different levels
     setRemainingTime(seconds);
     if (gameState == 'PLAYING') timer.current = setInterval(() => setRemainingTime(time => time - 1), 1000);
     return () => {
