@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 
 import Countdown from './Countdown';
+import easyWords from '../assets/easyWords.json';
+import mediumWords from '../assets/mediumWords.json';
+import hardWords from '../assets/hardWords.json';
 
 import type { difficultyType, gameStateType } from '../types';
 
 import './Game.css';
-
-const easyWords: string[] = ['aab', 'bba', 'cab'];
-const mediumWords: string[] = ['abcd', 'word', 'cake'];
-const hardWords: string[] = ['verybigword', 'anotherword', 'veryhardword'];
 
 type GameProps = {
   difficulty: difficultyType,
@@ -24,13 +23,12 @@ function Game({ difficulty, gameState, onGameOver }: GameProps) {
   const timer = useRef<number | undefined>(undefined);
 
   const getNewWord = (difficulty: difficultyType): string => {
-    const randomIndex = Math.floor(Math.random() * 3);
     if (difficulty === 'Easy') {
-      return easyWords[randomIndex];
+      return easyWords[Math.floor(Math.random() * easyWords.length)];
     } else if (difficulty == 'Medium') {
-      return mediumWords[randomIndex];
+      return mediumWords[Math.floor(Math.random() * mediumWords.length)];
     } else {
-      return hardWords[randomIndex];
+      return hardWords[Math.floor(Math.random() * hardWords.length)];
     }
   }
 
