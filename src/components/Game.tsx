@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import Countdown from './Countdown';
 
-import type { difficultyType } from '../types';
+import type { difficultyType, gameStateType } from '../types';
 
 import './Game.css';
 
@@ -11,11 +11,12 @@ const mediumWords: string[] = ['abcd', 'word', 'cake'];
 const hardWords: string[] = ['verybigword', 'anotherword', 'veryhardword'];
 
 type GameProps = {
-  difficulty: difficultyType
+  difficulty: difficultyType,
+  gameState: gameStateType,
+  onGameOver: () => void
 }
 
-function Game({ difficulty }: GameProps) {
-  const gameState = 'PLAYING';
+function Game({ difficulty, gameState, onGameOver }: GameProps) {
   const [currentWord, setCurrentWord] = useState<string>("abcd");
   const [input, setInput] = useState<string>("");
   const [remainingTime, setRemainingTime] = useState<number>(0);
@@ -63,14 +64,19 @@ function Game({ difficulty }: GameProps) {
   }, [input]);
 
   useEffect(() => {
+    if (remainingTime === 0 && timer.current) {
+      clearInterval(timer.current);
+      onGameOver();
+    }
+  }, [remainingTime]);
+
+  useEffect(() => {
     const seconds = currentWord.length;   // change logic for different levels
     setRemainingTime(seconds);
     timer.current = setInterval(() => setRemainingTime(time => time - 1), 1000);
-    return () => {
-      console.log('cleanup!');
-      if (timer.current) clearInterval(timer.current);
-    }
-  }, [currentWord, difficulty])
+    return () => clearInterval(timer.current);
+  }, [currentWord, difficulty]);
+
 
   return (
     <div className="Game">
