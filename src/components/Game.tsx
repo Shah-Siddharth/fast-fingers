@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
 import Countdown from './Countdown';
+
+import type { difficultyType } from '../types';
 
 import './Game.css';
 
@@ -9,8 +12,20 @@ const hardWords: string[] = ['verybigword', 'anotherword', 'veryhardword'];
 
 function Game() {
   const gameState = 'PLAYING';
-  const currentWord = 'abcd';
+  const difficulty: difficultyType = 'Easy';
+  const [currentWord, setCurrentWord] = useState("abcd");
   const [input, setInput] = useState("adc");
+
+  const getNewWord = (difficulty: difficultyType): string => {
+    const randomIndex = Math.floor(Math.random() * 3);
+    if (difficulty === 'Easy') {
+      return easyWords[randomIndex];
+    } else if (difficulty == 'Medium') {
+      return mediumWords[randomIndex];
+    } else {
+      return hardWords[randomIndex];
+    }
+  }
 
   const getLetterClass = (letter: string, index: number): string => {
     let colorStatus: number = 0;
@@ -33,6 +48,13 @@ function Game() {
 
     return letterClass;
   }
+
+  useEffect(() => {
+    if (input.toLowerCase() === currentWord) {
+      setCurrentWord(getNewWord(difficulty));
+      setInput("");
+    }
+  }, [input]);
 
   return (
     <div className="Game">
