@@ -93,7 +93,7 @@ function Game({ difficulty, gameState, onGameOver }: GameProps) {
         <div className="game-word">
           {currentWord.split("").map((letter, index) => {
             const letterClass = getLetterClass(letter, index);
-            return <h1 className={`game-word__letter ${letterClass}`}>{letter}</h1>
+            return <h1 key={index} className={`game-word__letter ${letterClass}`}>{letter}</h1>
           })}
         </div>
         <input type="text" value={input} onChange={(e) => setInput(e.target.value)} className="game-input" />
