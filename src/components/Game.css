@@ -10,6 +10,7 @@
 
 .game-input {
   font-size: 1rem;
+  margin-bottom: 15px;
 }
 
 .game-word__letter {
