@@ -2,3 +2,19 @@
   display: block;
   margin: 10px auto;
 }
+
+.game-footer__btn {
+  font-size: 1rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.game-footer__btn--play-again {
+  background-color: #333652;
+  color: white;
+}
+
+.game-footer__btn--quit-game {
+  background-color: crimson;
+  color: white;
+}

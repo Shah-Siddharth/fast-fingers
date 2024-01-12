@@ -1,3 +1,4 @@
+import TypingIcon from './assets/typing-icon.jpg'
 import './HomePage.css';
 
 type HomePageProps = {
@@ -12,7 +13,7 @@ function HomePage({ username, onDifficultyChange, onGameStart, onUsernameChange 
   return (
     <div className="HomePage">
       <div className="home-title">
-        <div className="home-title__logo">{/* logo goes here */}</div>
+        <img src={TypingIcon} className="home-title__logo" />
         <h1 className="home-title__heading">Fastest Fingers</h1>
         <h4 className="home-title__subheading">The ulitmate typing game</h4>
       </div>

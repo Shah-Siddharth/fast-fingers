@@ -105,8 +105,7 @@ function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
   if (gameState === 'PLAYING') {
     return (
       <div className="Game">
-        <Countdown />
-        <h1 className="temp-countdown">{remainingTime}</h1>
+        <h1 className="game-countdown">{remainingTime}</h1>
         <div className="game-word">
           {currentWord.split("").map((letter, index) => {
             const letterClass = getLetterClass(letter, index);

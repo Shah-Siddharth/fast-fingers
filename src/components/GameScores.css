@@ -1,6 +1,17 @@
 .GameScores {
   text-align: center;
   min-width: 25%;
+  max-width: 50%;
+  font-size: 1.1rem;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 3px 3px;
+  height: 225px;
+  overflow: auto;
+}
+
+.scores-heading {
+  text-decoration: underline;
 }
 
 .game-scores {
