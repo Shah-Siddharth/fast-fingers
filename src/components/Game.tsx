@@ -85,16 +85,16 @@ function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
     }
   }, [remainingTime]);
 
-  // for every new word, set a new timer
+  // for every new word, set a new timer. Also set the timer when gameState changes (over -> playing)
   useEffect(() => {
-    const seconds = Math.ceil(currentWord.length / difficultyValues.get(difficulty)!);   // change logic for different levels
+    const seconds = Math.ceil(currentWord.length / difficultyValues.get(difficulty)!);
     setRemainingTime(seconds);
     if (gameState == 'PLAYING') timer.current = setInterval(() => setRemainingTime(time => time - 1), 1000);
     return () => {
       clearInterval(timer.current);
       timer.current = undefined;
     }
-  }, [currentWord]);
+  }, [currentWord, gameState]);
 
   // if difficulty changes, get new word and update current difficulty value
   useEffect(() => {
