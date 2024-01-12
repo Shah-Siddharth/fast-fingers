@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-import Countdown from './Countdown';
 import easyWords from '../assets/easyWords.json';
 import mediumWords from '../assets/mediumWords.json';
 import hardWords from '../assets/hardWords.json';
