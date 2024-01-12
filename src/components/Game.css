@@ -4,6 +4,14 @@
   text-align: center;
 }
 
+.countdown-heading {
+  margin-bottom: 0px;
+}
+
+.countdown-bar {
+  margin-bottom: 25px;
+}
+
 .game-word {
   margin-bottom: 10px;
 }

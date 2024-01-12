@@ -28,7 +28,8 @@ function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
 
   const timer = useRef<number | undefined>(undefined);
   const incrementValue: number = 0.1  // increment difficulty after every successful word
-  const currentDifficultyValue = useRef<number>(difficultyValues.get(difficulty)!)
+  const currentDifficultyValue = useRef<number>(difficultyValues.get(difficulty)!);
+  const maxTimeForWord = useRef<number>(remainingTime);
 
   const getNewWord = (difficulty: difficultyType): string => {
     if (difficulty === 'Easy') {
@@ -88,6 +89,7 @@ function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
   useEffect(() => {
     const seconds = Math.ceil(currentWord.length / difficultyValues.get(difficulty)!);
     setRemainingTime(seconds);
+    maxTimeForWord.current = seconds;
     if (gameState == 'PLAYING') timer.current = setInterval(() => setRemainingTime(time => time - 1), 1000);
     return () => {
       clearInterval(timer.current);
@@ -104,14 +106,15 @@ function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
   if (gameState === 'PLAYING') {
     return (
       <div className="Game">
-        <h1 className="game-countdown">{remainingTime}</h1>
+        <h1 className="countdown-heading">{remainingTime}</h1>
+        <progress className='countdown-bar' value={remainingTime} max={maxTimeForWord.current}></progress>
         <div className="game-word">
           {currentWord.split("").map((letter, index) => {
             const letterClass = getLetterClass(letter, index);
             return <h1 key={index} className={`game-word__letter ${letterClass}`}>{letter}</h1>
           })}
         </div>
-        <input type="text" value={input} onChange={(e) => setInput(e.target.value)} className="game-input" />
+        <input type="text" autoFocus value={input} onChange={(e) => setInput(e.target.value)} className="game-input" />
       </div>
     )
   } else {
