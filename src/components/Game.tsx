@@ -66,11 +66,12 @@ function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
   // on user input, see if it matches the current word
   useEffect(() => {
     if (input.toLowerCase() === currentWord) {
-      setCurrentWord(getNewWord(difficulty));
-      setInput("");
       currentDifficultyValue.current = currentDifficultyValue.current + incrementValue;
       if (currentDifficultyValue.current >= difficultyValues.get('Hard')!) setDifficulty('Hard');
       else if (currentDifficultyValue.current >= difficultyValues.get('Medium')!) setDifficulty('Medium');
+
+      setInput("");
+      setCurrentWord(getNewWord(difficulty));
     }
   }, [input]);
 
@@ -80,14 +81,11 @@ function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
       clearInterval(timer.current);
       timer.current = undefined;
       setInput("");
-      setDifficulty('Easy');
-      currentDifficultyValue.current = difficultyValues.get('Easy')!;
-      setCurrentWord(getNewWord('Easy'));
       onGameOver();
     }
   }, [remainingTime]);
 
-  // for every new word or difficulty level, set a new timer
+  // for every new word, set a new timer
   useEffect(() => {
     const seconds = Math.ceil(currentWord.length / difficultyValues.get(difficulty)!);   // change logic for different levels
     setRemainingTime(seconds);
@@ -96,7 +94,13 @@ function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
       clearInterval(timer.current);
       timer.current = undefined;
     }
-  }, [currentWord, difficulty, gameState]);
+  }, [currentWord]);
+
+  // if difficulty changes, get new word and update current difficulty value
+  useEffect(() => {
+    currentDifficultyValue.current = difficultyValues.get(difficulty)!;
+    setCurrentWord(getNewWord(difficulty));
+  }, [difficulty])
 
   if (gameState === 'PLAYING') {
     return (

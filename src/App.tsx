@@ -23,9 +23,18 @@ function App() {
   const [username, setUsername] = useState<string>("");
 
   const timer = useRef<number | undefined>();
+  const selectedDifficulty = useRef<difficultyType>('Easy');
 
-  const handleDifficultyChange = (difficulty: string) => setDifficulty(difficulty as difficultyType);
-  const handleGameOver = () => setGameState('OVER');
+  const handleDifficultyChange = (difficulty: string) => {
+    setDifficulty(difficulty as difficultyType);
+    selectedDifficulty.current = difficulty as difficultyType;
+  }
+
+  const handleGameOver = () => {
+    setGameState('OVER');
+    setDifficulty(selectedDifficulty.current);
+  }
+
   const handleGameStart = () => setGameState('PLAYING');
   const handleGameQuit = () => setGameState('HOME');
   const handleUsernameChange = (username: string) => setUsername(username);
@@ -46,6 +55,7 @@ function App() {
       setUsername("");
       setCurrentScore(0);
       setDifficulty('Easy');
+      selectedDifficulty.current = 'Easy';
       setScores([]);
     }
 
@@ -54,6 +64,7 @@ function App() {
     }
 
     if (gameState == 'OVER') {
+      setDifficulty(selectedDifficulty.current);
       setScores(scores => [...scores, currentScore]);
     }
   }, [gameState]);
