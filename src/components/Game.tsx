@@ -7,6 +7,7 @@ import hardWords from '../assets/hardWords.json';
 import type { difficultyType, gameStateType } from '../types';
 
 import './Game.css';
+import useTimer from '../hooks/useTimer';
 
 type GameProps = {
   difficulty: difficultyType,
@@ -24,12 +25,13 @@ const difficultyValues = new Map<difficultyType, number>([
 function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
   const [currentWord, setCurrentWord] = useState<string>("");
   const [input, setInput] = useState<string>("");
-  const [remainingTime, setRemainingTime] = useState<number>(0);
+  // const [remainingTime, setRemainingTime] = useState<number>(0);
+  const [maxTimeForWord, remainingTime, gameOver] = useTimer(currentWord, difficulty, gameState);
 
-  const timer = useRef<number | undefined>(undefined);
+  // const timer = useRef<number | undefined>(undefined);
   const incrementValue: number = 0.1  // increment difficulty after every successful word
   const currentDifficultyValue = useRef<number>(difficultyValues.get(difficulty)!);
-  const maxTimeForWord = useRef<number>(remainingTime);
+  // const maxTimeForWord = useRef<number>(remainingTime);
 
   const getNewWord = (difficulty: difficultyType): string => {
     if (difficulty === 'Easy') {
@@ -75,27 +77,13 @@ function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
     }
   }, [input]);
 
-  // after decreasing remaining time, see if timer runs out
+  // set state on game over
   useEffect(() => {
-    if (remainingTime === 0 && timer.current) {   // game over
-      clearInterval(timer.current);
-      timer.current = undefined;
+    if (gameOver) {
       setInput("");
       onGameOver();
     }
-  }, [remainingTime]);
-
-  // for every new word, set a new timer. Also set the timer when gameState changes (over -> playing)
-  useEffect(() => {
-    const seconds = Math.ceil(currentWord.length / difficultyValues.get(difficulty)!);
-    setRemainingTime(seconds);
-    maxTimeForWord.current = seconds;
-    if (gameState == 'PLAYING') timer.current = setInterval(() => setRemainingTime(time => time - 1), 1000);
-    return () => {
-      clearInterval(timer.current);
-      timer.current = undefined;
-    }
-  }, [currentWord, gameState]);
+  }, [gameOver])
 
   // if difficulty changes, get new word and update current difficulty value
   useEffect(() => {
@@ -107,7 +95,7 @@ function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
     return (
       <div className="Game">
         <h1 className="countdown-heading">{remainingTime}</h1>
-        <progress className='countdown-bar' value={remainingTime} max={maxTimeForWord.current}></progress>
+        <progress className='countdown-bar' value={remainingTime} max={maxTimeForWord}></progress>
         <div className="game-word">
           {currentWord.split("").map((letter, index) => {
             const letterClass = getLetterClass(letter, index);
