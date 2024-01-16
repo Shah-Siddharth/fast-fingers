@@ -16,6 +16,8 @@ function useTimer(currentWord: string, difficulty: difficultyType, gameState: ga
       timer.current = undefined;
       setGameOver(true);
     }
+
+    return () => setGameOver(false);
   }, [remainingTime]);
 
   // for every new word, set a new timer. Also set the timer when gameState changes (over -> playing)
