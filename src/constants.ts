@@ -5,3 +5,5 @@ export const difficultyValues = new Map<difficultyType, number>([
   ['Medium', 1.5],
   ['Hard', 2]
 ]);
+
+export const incrementValue = 0.1   // value by which difficulty factor increases after successful word

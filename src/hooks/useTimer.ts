@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
-import { difficultyValues } from "../constants";
-import { difficultyType, gameStateType } from "../types";
+import { gameStateType } from "../types";
 
-function useTimer(currentWord: string, difficulty: difficultyType, gameState: gameStateType): [number, number, boolean] {
+function useTimer(currentWord: string, difficultyFactor: number, gameState: gameStateType): [number, number, boolean] {
   const timer = useRef<number|undefined>(undefined);
   const [gameOver, setGameOver] = useState<boolean>(false);
   const [remainingTime, setRemainingTime] = useState<number>(0);
@@ -22,7 +21,7 @@ function useTimer(currentWord: string, difficulty: difficultyType, gameState: ga
 
   // for every new word, set a new timer. Also set the timer when gameState changes (over -> playing)
   useEffect(() => {
-    const seconds = Math.ceil(currentWord.length / difficultyValues.get(difficulty)!);
+    const seconds = Math.ceil(currentWord.length / difficultyFactor);
     setRemainingTime(seconds);
     maxTimeForWord.current = seconds;
     if (gameState === 'PLAYING') timer.current = setInterval(() => setRemainingTime(time => time - 1), 1000);
