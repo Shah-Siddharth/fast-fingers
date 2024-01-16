@@ -1,11 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { difficultyType, gameStateType } from "../types";
 
-const difficultyValues = new Map<difficultyType, number>([
-  ['Easy', 1],
-  ['Medium', 1.5],
-  ['Hard', 2]
-])
+import { difficultyValues } from "../constants";
+import { difficultyType, gameStateType } from "../types";
 
 function useTimer(currentWord: string, difficulty: difficultyType, gameState: gameStateType): [number, number, boolean] {
   const timer = useRef<number|undefined>(undefined);

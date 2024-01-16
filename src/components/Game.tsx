@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
+import useTimer from '../hooks/useTimer';
 
 import easyWords from '../assets/easyWords.json';
 import mediumWords from '../assets/mediumWords.json';
 import hardWords from '../assets/hardWords.json';
+import { difficultyValues } from '../constants';
 
 import type { difficultyType, gameStateType } from '../types';
 
 import './Game.css';
-import useTimer from '../hooks/useTimer';
 
 type GameProps = {
   difficulty: difficultyType,
@@ -16,22 +17,13 @@ type GameProps = {
   setDifficulty: (val: difficultyType) => void
 }
 
-const difficultyValues = new Map<difficultyType, number>([
-  ['Easy', 1],
-  ['Medium', 1.5],
-  ['Hard', 2]
-])
-
 function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
   const [currentWord, setCurrentWord] = useState<string>("");
   const [input, setInput] = useState<string>("");
-  // const [remainingTime, setRemainingTime] = useState<number>(0);
   const [maxTimeForWord, remainingTime, gameOver] = useTimer(currentWord, difficulty, gameState);
 
-  // const timer = useRef<number | undefined>(undefined);
   const incrementValue: number = 0.1  // increment difficulty after every successful word
   const currentDifficultyValue = useRef<number>(difficultyValues.get(difficulty)!);
-  // const maxTimeForWord = useRef<number>(remainingTime);
 
   const getNewWord = (difficulty: difficultyType): string => {
     if (difficulty === 'Easy') {
