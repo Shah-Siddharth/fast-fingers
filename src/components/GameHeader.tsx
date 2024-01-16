@@ -9,7 +9,6 @@ type GameHeaderProps = {
 }
 
 function GameHeader({ score, username, difficulty }: GameHeaderProps) {
-  const currentScore: number = 10;
 
   return (
     <>
