@@ -13,6 +13,6 @@
 }
 
 .game-padding {
-  visibility: collapse;
+  visibility: hidden;
   width: 25%;
 }
