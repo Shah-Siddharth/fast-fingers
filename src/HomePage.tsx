@@ -14,7 +14,7 @@ function HomePage({ username, onDifficultyChange, onGameStart, onUsernameChange 
     <div className="HomePage">
       <div className="home-title">
         <img src={TypingIcon} className="home-title__logo" />
-        <h1 className="home-title__heading">Fastest Fingers</h1>
+        <h1 className="home-title__heading">Fast Fingers</h1>
         <h4 className="home-title__subheading">The ulitmate typing game</h4>
       </div>
       <div className="home-form">
