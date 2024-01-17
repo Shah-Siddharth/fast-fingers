@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Salsa';
+  src: url('./assets/Salsa-Regular.ttf');
+}
+
 * {
   font-family: 'Salsa', cursive;
 }
