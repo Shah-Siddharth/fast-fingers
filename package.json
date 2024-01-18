@@ -1,6 +1,7 @@
 {
   "name": "fast-fingers",
-  "private": true,
+  "private": false,
+  "homepage": "https://Shah-Siddharth.github.io/fast-fingers",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
