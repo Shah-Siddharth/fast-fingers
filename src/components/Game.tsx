@@ -55,17 +55,23 @@ function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
     return letterClass;
   }
 
-  // on user input, see if it matches the current word
-  useEffect(() => {
+  const handleInputChange = (input: string) => {
     if (input.toLowerCase() === currentWord) {
       difficultyFactor.current = difficultyFactor.current + incrementValue;
-      if (difficultyFactor.current >= difficultyValues.get('Hard')!) setDifficulty('Hard');
-      else if (difficultyFactor.current >= difficultyValues.get('Medium')!) setDifficulty('Medium');
+      if (difficultyFactor.current >= difficultyValues.get('Hard')!) {
+        setDifficulty('Hard');
+      }
+      else if (difficultyFactor.current >= difficultyValues.get('Medium')!) {
+        setDifficulty('Medium');
+      }
 
       setInput("");
       setCurrentWord(getNewWord(difficulty));
+
+    } else {
+      setInput(input);
     }
-  }, [input]);
+  }
 
   // set state on game over
   useEffect(() => {
@@ -92,7 +98,7 @@ function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
             return <h1 key={index} className={`game-word__letter ${letterClass}`}>{letter}</h1>
           })}
         </div>
-        <input type="text" autoFocus value={input} onChange={(e) => setInput(e.target.value)} className="game-input" />
+        <input type="text" autoFocus value={input} onChange={(e) => handleInputChange(e.target.value)} className="game-input" />
       </div>
     )
   } else {
