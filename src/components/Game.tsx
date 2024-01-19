@@ -1,14 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
-import useTimer from '../hooks/useTimer';
-
-import easyWords from '../assets/easyWords.json';
-import mediumWords from '../assets/mediumWords.json';
-import hardWords from '../assets/hardWords.json';
-import { difficultyValues, incrementValue } from '../constants';
-
 import type { difficultyType, gameStateType } from '../types';
 
 import './Game.css';
+import useGame from '../hooks/useGame';
 
 type GameProps = {
   difficulty: difficultyType,
@@ -19,21 +12,13 @@ type GameProps = {
 
 function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
 
-  const getNewWord = (difficulty: difficultyType): string => {
-    if (difficulty === 'Easy') {
-      return easyWords[Math.floor(Math.random() * easyWords.length)];
-    } else if (difficulty == 'Medium') {
-      return mediumWords[Math.floor(Math.random() * mediumWords.length)];
-    } else {
-      return hardWords[Math.floor(Math.random() * hardWords.length)];
-    }
-  }
-
-  const [currentWord, setCurrentWord] = useState<string>(getNewWord(difficulty));
-  const [input, setInput] = useState<string>("");
-  const difficultyFactor = useRef<number>(difficultyValues.get(difficulty)!);
-  const [maxTimeForWord, remainingTime, gameOver] = useTimer(currentWord, difficultyFactor.current, gameState);
-
+  const {
+    input,
+    currentWord,
+    remainingTime,
+    maxTimeForWord,
+    handleInputChange
+  } = useGame({ difficulty, gameState, setDifficulty, onGameOver })
 
   const getLetterClass = (letter: string, index: number): string => {
     let colorStatus: number = 0;
@@ -56,32 +41,6 @@ function Game({ difficulty, gameState, onGameOver, setDifficulty }: GameProps) {
 
     return letterClass;
   }
-
-  const handleInputChange = (input: string) => {
-    if (input.toLowerCase() === currentWord) {
-      difficultyFactor.current = difficultyFactor.current + incrementValue;
-      if (difficultyFactor.current >= difficultyValues.get('Hard')!) {
-        setDifficulty('Hard');
-      }
-      else if (difficultyFactor.current >= difficultyValues.get('Medium')!) {
-        setDifficulty('Medium');
-      }
-
-      setCurrentWord(getNewWord(difficulty));
-      setInput("");
-
-    } else {
-      setInput(input);
-    }
-  }
-
-  // set state on game over
-  useEffect(() => {
-    if (gameOver) {
-      setInput("");
-      onGameOver();
-    }
-  }, [gameOver])
 
   if (gameState === 'PLAYING') {
     return (
