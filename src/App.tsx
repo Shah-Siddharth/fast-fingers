@@ -1,5 +1,5 @@
 // libraries and packages
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 // other components
 import Game from './components/Game';
@@ -34,11 +34,15 @@ function App() {
     setGameState('OVER');
     setDifficulty(selectedDifficulty.current);
     setScores(scores => [...scores, currentScore]);
+
+    if (timer.current) clearInterval(timer.current);
   }
 
   const handleGameStart = () => {
     setGameState('PLAYING');
     setCurrentScore(0);
+
+    timer.current = setInterval(() => setCurrentScore(score => score + 1), 1000);
   }
 
   const handleGameQuit = () => {
@@ -48,19 +52,11 @@ function App() {
     setDifficulty('Easy');
     selectedDifficulty.current = 'Easy';
     setScores([]);
+
+    if (timer.current) clearInterval(timer.current);
   }
 
   const handleUsernameChange = (username: string) => setUsername(username);
-
-  // handle the score timer
-  useEffect(() => {
-    if (gameState == 'PLAYING') {
-      timer.current = setInterval(() => setCurrentScore(score => score + 1), 1000);
-    } else {
-      if (timer.current) clearInterval(timer.current);
-    }
-    return () => clearInterval(timer.current);
-  }, [gameState]);
 
   if (gameState === 'HOME') {
     return (
