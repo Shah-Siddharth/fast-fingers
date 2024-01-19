@@ -33,10 +33,23 @@ function App() {
   const handleGameOver = () => {
     setGameState('OVER');
     setDifficulty(selectedDifficulty.current);
+    setScores(scores => [...scores, currentScore]);
   }
 
-  const handleGameStart = () => setGameState('PLAYING');
-  const handleGameQuit = () => setGameState('HOME');
+  const handleGameStart = () => {
+    setGameState('PLAYING');
+    setCurrentScore(0);
+  }
+
+  const handleGameQuit = () => {
+    setGameState('HOME');
+    setUsername("");
+    setCurrentScore(0);
+    setDifficulty('Easy');
+    selectedDifficulty.current = 'Easy';
+    setScores([]);
+  }
+
   const handleUsernameChange = (username: string) => setUsername(username);
 
   // handle the score timer
@@ -47,26 +60,6 @@ function App() {
       if (timer.current) clearInterval(timer.current);
     }
     return () => clearInterval(timer.current);
-  }, [gameState]);
-
-  // handle state updates based on gameState changes
-  useEffect(() => {
-    if (gameState == 'HOME') {
-      setUsername("");
-      setCurrentScore(0);
-      setDifficulty('Easy');
-      selectedDifficulty.current = 'Easy';
-      setScores([]);
-    }
-
-    if (gameState == 'PLAYING') {
-      setCurrentScore(0);
-    }
-
-    if (gameState == 'OVER') {
-      setDifficulty(selectedDifficulty.current);
-      setScores(scores => [...scores, currentScore]);
-    }
   }, [gameState]);
 
   if (gameState === 'HOME') {
