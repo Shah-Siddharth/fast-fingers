@@ -88,6 +88,7 @@ function App() {
       <div className="game-main">
         <GameScores scores={scores} />
         <Game
+          key={difficulty}
           difficulty={difficulty}
           gameState={gameState}
           onGameOver={handleGameOver}
