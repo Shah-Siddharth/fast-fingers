@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { gameStateType } from "../types";
 
 function useTimer(currentWord: string, difficultyFactor: number, gameState: gameStateType): [number, number, boolean] {
-  const timer = useRef<number|undefined>(undefined);
+  const timer = useRef<number | NodeJS.Timeout | undefined>(undefined);
   const [gameOver, setGameOver] = useState<boolean>(false);
   const [remainingTime, setRemainingTime] = useState<number>(0);
   const maxTimeForWord = useRef<number>(remainingTime);
@@ -31,7 +31,7 @@ function useTimer(currentWord: string, difficultyFactor: number, gameState: game
     }
   }, [currentWord, gameState]);
 
-  return  [maxTimeForWord.current, remainingTime, gameOver]
+  return [maxTimeForWord.current, remainingTime, gameOver]
 }
 
 export default useTimer;

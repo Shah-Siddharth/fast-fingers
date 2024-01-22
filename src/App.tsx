@@ -22,7 +22,7 @@ function App() {
   const [scores, setScores] = useState<number[]>([]);
   const [username, setUsername] = useState<string>("");
 
-  const timer = useRef<number | undefined>();
+  const timer = useRef<number | NodeJS.Timeout | undefined>();
   const selectedDifficulty = useRef<difficultyType>('Easy');
 
   const handleDifficultyChange = (difficulty: string) => {
