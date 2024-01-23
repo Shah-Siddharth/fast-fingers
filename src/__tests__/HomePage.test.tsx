@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import '@testing-library/jest-dom';
 
 import App from "../App";
@@ -19,10 +20,26 @@ describe("Renders the Homepage", () => {
 
   test("select box should have correct difficulty values", () => {
     setup();
-    screen.debug();
     expect(screen.getAllByRole('option').length).toBe(3);
     expect(screen.getByRole('option', { name: /easy/i })).toBeInTheDocument();
     expect(screen.getByRole('option', { name: /medium/i })).toBeInTheDocument();
     expect(screen.getByRole('option', { name: /hard/i })).toBeInTheDocument();
   });
+
+  test("user should be able to select different difficulty values", async () => {
+    setup();
+    await userEvent.selectOptions(
+      screen.getByRole('combobox'),
+      screen.getByRole('option', { name: /medium/i })
+    )
+    expect(screen.getByRole('combobox')).toHaveDisplayValue(/medium/i);
+  });
+
+  test("button should be enabled once user inputs username", async () => {
+    setup();
+    await userEvent.click(screen.getByRole('textbox'));
+    await userEvent.keyboard("username");
+    expect(screen.getByRole('button', { name: /start game/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /start game/i })).not.toBeDisabled();
+  })
 })
